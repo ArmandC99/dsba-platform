@@ -33,4 +33,26 @@ def preprocess_dataframe(df):
     for column in df.select_dtypes(include=["object"]):
         le = LabelEncoder()
         df[column] = le.fit_transform(df[column].astype(str))
+
+    return df
+
+def preprocess_dataframe_logistic(df):
+    """
+    Preprocess DataFrame by encoding categorical columns.
+    ML algorithms typically can't only handle numbers, so there may be quite a lot of feature engineering and preprocessing with other types of data.
+    Here, we take a very simplistic approach of applying the same treatment to all non-numeric columns.
+    """
+    for column in df.select_dtypes(include=["object"]):
+        le = LabelEncoder()
+        df[column] = le.fit_transform(df[column].astype(str))
+    
+    # Handle missing values
+    df["Embarked"] = df["Embarked"].fillna("N")
+    df["Age"] = df["Age"].fillna(df["Age"].median())
+
+    df.drop(columns=["Name", "Ticket", "Cabin"], inplace=True)
+
+    # Convert categorical columns to category type
+    df = df.get_dummies(df, columns=["Embarked"], dummy_na=True)
+
     return df
