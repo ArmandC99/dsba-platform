@@ -1,33 +1,15 @@
-# Add this function to dsba-platform/src/dsba/model_comparison.py
-# Make sure necessary imports are present at the top of the file:
 import pandas as pd
 from typing import List
 from .model_registry import load_model
-from sklearn.metrics import accuracy_score, f1_score # Add other metrics if needed
+from sklearn.metrics import accuracy_score, f1_score 
 
 def compare_models_simple(model_ids: List[str],
                            X_eval: pd.DataFrame,
                            y_eval: pd.Series,
                            metrics: List[str]) -> pd.DataFrame:
-    """
-    Compares a list of models based on specified metrics using evaluation data.
-
-    Args:
-        model_ids: A list of strings, where each string is the ID of a model
-                   registered in the model registry.
-        X_eval: A pandas DataFrame containing the features for evaluation.
-                It's assumed this data is already preprocessed appropriately
-                for the models being tested.
-        y_eval: A pandas Series containing the true target labels for evaluation.
-        metrics: A list of strings specifying the metrics to calculate.
-                 Currently supports 'accuracy' and 'f1'.
-
-    Returns:
-        A pandas DataFrame where each row corresponds to a model and columns
-        represent the calculated metric scores. Includes 'model_id' column.
-    """
+    
     results = []
-    # Define supported metrics for this simple version
+    
     supported_metrics = ['accuracy', 'f1']
     valid_metrics = [m.lower() for m in metrics if m.lower() in supported_metrics]
 
