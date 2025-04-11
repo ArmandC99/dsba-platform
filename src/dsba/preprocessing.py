@@ -1,9 +1,6 @@
 from pandas import DataFrame, Series
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-from sklearn.linear_model import LogisticRegression
-
 
 # from sklearn.model_selection import train_test_split
 
@@ -29,27 +26,11 @@ def split_dataframe(
 
 def preprocess_dataframe(df):
     """
-    Prétraiter le DataFrame en encodant les colonnes catégoriques.
-    
-    Les algorithmes de machine learning traitent généralement des nombres.
-    Ainsi, ce prétraitement va :
-        - Pour un modèle LogisticRegression uniquement :
-            * Gérer les valeurs manquantes dans "Embarked" et "Age"
-            * Transformer la colonne "Embarked" en variables indicatrices (dummies)
-            * Supprimer les colonnes "Name", "Ticket" et "Cabin"
-        - Pour toutes les colonnes de type 'object', appliquer un LabelEncoder pour les convertir en nombres.
-    
-    Parameters:
-        df (pandas.DataFrame): Le DataFrame à prétraiter.
-        model: L'instance du modèle qui sera utilisé en aval.
-        
-    Returns:
-        pandas.DataFrame: Le DataFrame prétraité.
+    Preprocess DataFrame by encoding categorical columns.
+    ML algorithms typically can't only handle numbers, so there may be quite a lot of feature engineering and preprocessing with other types of data.
+    Here, we take a very simplistic approach of applying the same treatment to all non-numeric columns.
     """
-
-    # Encodage de toutes les colonnes de type 'object' avec LabelEncoder
     for column in df.select_dtypes(include=["object"]):
         le = LabelEncoder()
         df[column] = le.fit_transform(df[column].astype(str))
-    
     return df
